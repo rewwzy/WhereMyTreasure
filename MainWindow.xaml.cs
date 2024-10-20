@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KAutoHelper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WhereMyTreasure.Utils;
 
 namespace WhereMyTreasure
 {
@@ -23,6 +25,20 @@ namespace WhereMyTreasure
         public MainWindow()
         {
             InitializeComponent();
+
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> devices = KAutoHelper.ADBHelper.GetDevices();
+            AutoHelper helper = new AutoHelper();
+            helper.AddAutoFuncion(ActionType.Tap, new { X = 622, Y = 393, Time = 1 });
+            foreach (var deviceID in devices)
+            {
+              
+                helper.RunAutoScript(deviceID);
+            }
         }
     }
 }

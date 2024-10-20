@@ -5,6 +5,16 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Emgu.CV.World">
+      <HintPath>..\Downloads\ADBHowkteamLibrary (1)\ADBHowkteamLibrary\KAutoHelper V2\Dùng xử lý ảnh\Emgu.CV.World.dll</HintPath>
+    </Reference>
+    <Reference Include="KAutoHelper">
+      <HintPath>bin\Debug\net6.0-windows\KAutoHelper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
