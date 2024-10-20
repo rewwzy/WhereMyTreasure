@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "WhereMyTreasure/1.0.0": {
+        "dependencies": {
+          "Emgu.CV.World": "3.4.3.3016",
+          "KAutoHelper": "1.0.0.0"
+        },
+        "runtime": {
+          "WhereMyTreasure.dll": {}
+        }
+      },
+      "Emgu.CV.World/3.4.3.3016": {
+        "runtime": {
+          "Emgu.CV.World.dll": {
+            "assemblyVersion": "3.4.3.3016",
+            "fileVersion": "3.4.3.3016"
+          }
+        }
+      },
+      "KAutoHelper/1.0.0.0": {
+        "runtime": {
+          "KAutoHelper.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WhereMyTreasure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Emgu.CV.World/3.4.3.3016": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "KAutoHelper/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
