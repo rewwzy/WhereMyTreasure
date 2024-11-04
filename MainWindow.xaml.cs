@@ -33,11 +33,11 @@ namespace WhereMyTreasure
         {
             List<string> devices = KAutoHelper.ADBHelper.GetDevices();
             AutoHelper helper = new AutoHelper();
-            helper.AddAutoFuncion(ActionType.Tap, new { X = 622, Y = 393, Time = 1 });
             foreach (var deviceID in devices)
             {
               
-                helper.RunAutoScript(deviceID);
+                helper.GetCurrentPosition(deviceID);
+
             }
         }
     }

@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:WhereMyTreasure"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="250">
-    <Grid>
-        <Button x:Name="button" Content="Button" Click="button_Click" Margin="10,10,130,430"/>
+    <Grid Height="80" VerticalAlignment="Top">
+        <Button x:Name="button" Content="Button" Click="button_Click" Margin="10,10,130,50" Grid.Column="0" Grid.Row="0"/>
+        <TextBox x:Name ="_multi" Height="20" Margin="0,0,0,0"  Grid.Column="1" Grid.Row="0" />
+        <TextBox x:Name ="_threshold" Height="20" Margin="0,55,0,0" Grid.Row="0" VerticalAlignment="Top" d:LayoutOverrides="Height" />
 
     </Grid>
 </Window>

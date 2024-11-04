@@ -9,8 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IronOcr" Version="2024.10.3" />
+    <PackageReference Include="OpenSlideSharp.OpenCVExtensions" Version="1.1.2" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.10" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+    <PackageReference Include="Tesseract.Drawing" Version="5.2.0" />
+    <PackageReference Include="TesserNet.System.Drawing" Version="0.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Emgu.CV.World">
-      <HintPath>..\Downloads\ADBHowkteamLibrary (1)\ADBHowkteamLibrary\KAutoHelper V2\Dùng xử lý ảnh\Emgu.CV.World.dll</HintPath>
+      <HintPath>bin\Debug\net6.0-windows\Emgu.CV.World.dll</HintPath>
     </Reference>
     <Reference Include="KAutoHelper">
       <HintPath>bin\Debug\net6.0-windows\KAutoHelper.dll</HintPath>
