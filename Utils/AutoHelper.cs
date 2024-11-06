@@ -1,8 +1,10 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Bioinspired;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Ocl;
 using Emgu.CV.Structure;
 using IronOcr;
+using KAutoHelper;
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using Tesseract;
+using WhereMyTreasure.Utils;
 using ImreadModes = Emgu.CV.CvEnum.ImreadModes;
 using Point = System.Drawing.Point;
 //using Tesseract.Interop;
@@ -34,25 +37,71 @@ namespace WhereMyTreasure.Utils
     {
 
         bool _isStop = false;
-        public int[] _delayTimeRange = { 5, 10 };
+        public int[] _delayTimeRange = { 1, 2 };
         public int _maxWaitTime = 30;
         public int _waitTimeCount = 5;
         public float _detectPercent = 0.7f;
         #region DATA
         Bitmap PLAYER_POST_BMP;
         Bitmap GLOBAL_POST_BMP;
+
+        public string deviceID;
+
+        private Bitmap SCREENSHOT;
         public int _multi = 2;
         public int _threshold = 100;
         public Vector2 GlobalPos = new Vector2();
+        private Utils _util = new Utils();
 
-
-        #endregion
-        public AutoHelper()
+        public void LoadData()
         {
+            PLAYER_POST_BMP = (Bitmap)Bitmap.FromFile("TemplateImage//CurrentPost.png");
+            GLOBAL_POST_BMP = (Bitmap)Bitmap.FromFile("TemplateImage//GlobalPos.png");
+        }
+        #endregion
+        public AutoHelper(string _deviceID)
+        {
+            deviceID = _deviceID;
             LoadData();
         }
+        public void Login()
+        {
+            try
+            {
+                KAutoHelper.ADBHelper.FindImageAndClick(deviceID, "TemplateImage//btn_dang_nhap.png", 500, 1);
+            }
+            catch
+            {
+                return;
+            }
+        }
+        public void CheckForRate()
+        {
+            try
+            {
+                KAutoHelper.ADBHelper.FindImageAndClick(deviceID, "TemplateImage//btn_dont_rate.png", 500, 1);
+            }
+            catch
+            {
+                return;
+            }
+        }
 
-        public void GetCurrentPosition(string deviceID)
+        public bool Move(Point targetPos, int duration)
+        {
+
+            int radius = 20;
+            Point dragPoint = new Point();
+            Point dragStartPoint = new Point(80,300);
+            GetCurrentPosition();
+            float x = targetPos.X - GlobalPos.X;
+            float y = targetPos.Y - GlobalPos.Y;
+            dragPoint.Y = (int)(radius * (y / Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2))));
+            dragPoint.X = (int)Math.Sqrt((Math.Pow(radius, 2) - Math.Pow(dragPoint.Y, 2)));
+            KAutoHelper.ADBHelper.Swipe(deviceID, dragStartPoint.X, dragStartPoint.Y, dragStartPoint.X+ dragPoint.X, dragStartPoint.Y+ dragPoint.Y, duration);
+            return true;
+        }
+        public void GetCurrentPosition()
         {
             Task t = new Task(() =>
             {
@@ -62,12 +111,11 @@ namespace WhereMyTreasure.Utils
                     {
                         return;
                     }
-
-                    var screen = KAutoHelper.ADBHelper.ScreenShoot(deviceID);
-                    var CurrentPoint = KAutoHelper.ImageScanOpenCV.FindOutPoint(screen, GLOBAL_POST_BMP, _detectPercent);
-                    if (CurrentPoint != null)
+                    TakeScreenShot();
+                    var posImageFind = FindImageInScreen(GLOBAL_POST_BMP);
+                    if (posImageFind != null)
                     {
-                        string[] result = GetPositionFromIMage(screen, (System.Drawing.Point)CurrentPoint, new Point(PLAYER_POST_BMP.Width, PLAYER_POST_BMP.Height));
+                        string[] result = GetPositionFromIMage(SCREENSHOT, (System.Drawing.Point)posImageFind, new Point(PLAYER_POST_BMP.Width, PLAYER_POST_BMP.Height));
 
                         GlobalPos.X = int.Parse(result[1]);
                         GlobalPos.Y = int.Parse(result[2]);
@@ -104,17 +152,21 @@ namespace WhereMyTreasure.Utils
                 return point.Split(".");
             }
         }
-        public void LoadData()
+        public Point? FindImageInScreen(Bitmap image)
         {
-            PLAYER_POST_BMP = (Bitmap)Bitmap.FromFile("TemplateImage//CurrentPost.png");
-            GLOBAL_POST_BMP = (Bitmap)Bitmap.FromFile("TemplateImage//GlobalPos.png");
+            return KAutoHelper.ImageScanOpenCV.FindOutPoint(SCREENSHOT, image, _detectPercent);
+        }
+        public void TakeScreenShot()
+        {
+            SCREENSHOT = KAutoHelper.ADBHelper.ScreenShoot(deviceID);
 
         }
+
         public void Stop()
         {
             _isStop = true;
         }
-        private void Delay(int delay)
+        public void Delay(int delay)
         {
             while (!_isStop)
             {
